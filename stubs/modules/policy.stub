@@ -1,0 +1,44 @@
+<?php
+
+namespace App\Modules\{{MODULE}}\Policies;
+
+use App\Modules\User\Models\User;
+use App\Modules\{{MODULE}}\Models\{{MODULE}};
+
+class {{MODULE}}Policy
+{
+    public function viewAny(User $user): bool
+    {
+        return true;
+    }
+
+    public function view(User $user, {{MODULE}} ${{MODULE_LOWER}}): bool
+    {
+        return true;
+    }
+
+    public function create(User $user): bool
+    {
+        return true;
+    }
+
+    public function update(User $user, {{MODULE}} ${{MODULE_LOWER}}): bool
+    {
+        return true;
+    }
+
+    public function delete(User $user, {{MODULE}} ${{MODULE_LOWER}}): bool
+    {
+        return true;
+    }
+
+    public function restore(User $user, {{MODULE}} ${{MODULE_LOWER}}): bool
+    {
+        return true;
+    }
+
+    public function forceDelete(User $user, {{MODULE}} ${{MODULE_LOWER}}): bool
+    {
+        return true;
+    }
+}

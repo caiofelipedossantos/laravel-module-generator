@@ -1,0 +1,10 @@
+<?php
+
+namespace App\Modules\{{MODULE}}\Repositories\Contracts;
+
+use App\Core\Contracts\RepositoryInterface;
+
+interface {{MODULE}}RepositoryInterface extends RepositoryInterface
+{
+    
+}

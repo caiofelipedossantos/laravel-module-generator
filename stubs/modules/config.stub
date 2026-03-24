@@ -1,0 +1,18 @@
+<?php
+
+return [
+    /*
+    |--------------------------------------------------------------------------
+    | {{MODULE}} Module Configuration
+    |--------------------------------------------------------------------------
+    |
+    | This file contains configuration options for the {{MODULE}} module.
+    |
+    */
+
+    'enabled' => env('{{MODULE_UPPER}}_ENABLED', true),
+    'pagination' => [
+        'per_page' => env('{{MODULE_UPPER}}_PER_PAGE', 15),
+        'max_per_page' => env('{{MODULE_UPPER}}_MAX_PER_PAGE', 100),
+    ],
+];

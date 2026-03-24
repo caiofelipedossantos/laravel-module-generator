@@ -1,0 +1,77 @@
+<?php
+
+namespace App\Modules\{{MODULE}}\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Modules\{{MODULE}}\Services\{{MODULE}}Service;
+use App\Modules\{{MODULE}}\Http\Requests\Store{{MODULE}}Request;
+use App\Modules\{{MODULE}}\Http\Requests\Update{{MODULE}}Request;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\View\View;
+
+class {{MODULE}}Controller extends Controller
+{
+    public function __construct(
+        protected {{MODULE}}Service $service
+    ) {}
+
+    public function index(): View
+    {
+        ${{MODULE_LOWER_PLURAL}} = $this->service->paginate(
+            perPage: request('per_page', 15)
+        );
+
+        return view('{{MODULE_KEBAB_PLURAL}}.index', compact('{{MODULE_LOWER_PLURAL}}'));
+    }
+
+    public function create(): View
+    {
+        return view('{{MODULE_KEBAB_PLURAL}}.create');
+    }
+
+    public function store(Store{{MODULE}}Request $request): RedirectResponse
+    {
+        $this->service->create($request->validated());
+
+        return redirect()->route('{{MODULE_KEBAB_PLURAL}}.index')
+            ->with('success', '{{MODULE}} criado com sucesso!');
+    }
+
+    public function show(string $uuid): View
+    {
+        ${{MODULE_LOWER}} = $this->service->findByUuid($uuid);
+        abort_if(!${{MODULE_LOWER}}, 404);
+
+        return view('{{MODULE_KEBAB_PLURAL}}.show', compact('{{MODULE_LOWER}}'));
+    }
+
+    public function edit(string $uuid): View
+    {
+        ${{MODULE_LOWER}} = $this->service->findByUuid($uuid);
+        abort_if(!${{MODULE_LOWER}}, 404);
+
+        return view('{{MODULE_KEBAB_PLURAL}}.edit', compact('{{MODULE_LOWER}}'));
+    }
+
+    public function update(Update{{MODULE}}Request $request, string $uuid): RedirectResponse
+    {
+        ${{MODULE_LOWER}} = $this->service->findByUuid($uuid);
+        abort_if(!${{MODULE_LOWER}}, 404);
+
+        $this->service->update(${{MODULE_LOWER}}, $request->validated());
+
+        return redirect()->route('{{MODULE_KEBAB_PLURAL}}.index')
+            ->with('success', '{{MODULE}} atualizado com sucesso!');
+    }
+
+    public function destroy(string $uuid): RedirectResponse
+    {
+        ${{MODULE_LOWER}} = $this->service->findByUuid($uuid);
+        abort_if(!${{MODULE_LOWER}}, 404);
+
+        $this->service->delete(${{MODULE_LOWER}});
+
+        return redirect()->route('{{MODULE_KEBAB_PLURAL}}.index')
+            ->with('success', '{{MODULE}} excluído com sucesso!');
+    }
+}

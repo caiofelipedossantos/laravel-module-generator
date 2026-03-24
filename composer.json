@@ -1,0 +1,40 @@
+{
+    "name": "caio/laravel-module-generator",
+    "description": "Gerador de módulos para Laravel com estrutura completa (API e Web)",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.1",
+        "illuminate/support": "^10.0|^11.0|^12.0",
+        "illuminate/console": "^10.0|^11.0|^12.0",
+        "illuminate/filesystem": "^10.0|^11.0|^12.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^8.0|^9.0|^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Caio\\LaravelModuleGenerator\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Caio\\LaravelModuleGenerator\\Tests\\": "tests/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Caio Felipe",
+            "email": "caio@devapps.com.br"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Caio\\LaravelModuleGenerator\\Providers\\ModuleServiceProvider"
+            ]
+        }
+    }
+}

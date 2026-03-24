@@ -1,0 +1,136 @@
+<?php
+
+namespace App\Modules\{{MODULE}}\Tests\Unit;
+
+use Tests\TestCase;
+use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Modules\{{MODULE}}\Models\{{MODULE}};
+use App\Modules\{{MODULE}}\Services\{{MODULE}}Service;
+use App\Modules\{{MODULE}}\Repositories\{{MODULE}}Repository;
+
+class {{MODULE}}ServiceTest extends TestCase
+{
+    use RefreshDatabase;
+
+    protected {{MODULE}}Service $service;
+    protected {{MODULE}}Repository $repository;
+
+  
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $model = new {{MODULE}}();
+        $this->repository = new {{MODULE}}Repository($model);
+        $this->service = new {{MODULE}}Service($this->repository);
+    }
+
+  
+    public function test_service_can_retrieve_all_{{MODULE_LOWER_PLURAL}}(): void
+    {
+        {{MODULE}}::factory()->count(3)->create();
+
+        ${{MODULE_LOWER_PLURAL}} = $this->service->all();
+
+        $this->assertCount(3, ${{MODULE_LOWER_PLURAL}});
+    }
+
+   
+    public function test_service_can_paginate_{{MODULE_LOWER_PLURAL}}(): void
+    {
+        {{MODULE}}::factory()->count(20)->create();
+
+        $paginated = $this->service->paginate(10);
+
+        $this->assertEquals(10, $paginated->perPage());
+        $this->assertEquals(20, $paginated->total());
+        $this->assertEquals(2, $paginated->lastPage());
+    }
+
+  
+    public function test_service_can_find_{{MODULE_LOWER}}_by_id(): void
+    {
+        ${{MODULE_LOWER}} = {{MODULE}}::factory()->create();
+
+        $found = $this->service->findById(${{MODULE_LOWER}}->id);
+
+        $this->assertNotNull($found);
+        $this->assertEquals(${{MODULE_LOWER}}->id, $found->id);
+    }
+
+  
+    public function test_service_can_find_{{MODULE_LOWER}}_by_uuid(): void
+    {
+        ${{MODULE_LOWER}} = {{MODULE}}::factory()->create();
+
+        $found = $this->service->findByUuid(${{MODULE_LOWER}}->uuid);
+
+        $this->assertNotNull($found);
+        $this->assertEquals(${{MODULE_LOWER}}->uuid, $found->uuid);
+    }
+
+
+    public function test_service_can_create_{{MODULE_LOWER}}(): void
+    {
+        $data = [
+            
+        ];
+
+        ${{MODULE_LOWER}} = $this->service->create($data);
+
+        $this->assertInstanceOf({{MODULE}}::class, ${{MODULE_LOWER}});
+        $this->assertDatabaseHas('{{TABLE_NAME}}', [
+            'id' => ${{MODULE_LOWER}}->id,
+        ]);
+    }
+
+
+    public function test_service_can_update_{{MODULE_LOWER}}(): void
+    {
+        ${{MODULE_LOWER}} = {{MODULE}}::factory()->create();
+
+        $data = [
+            
+        ];
+
+        $updated = $this->service->update(${{MODULE_LOWER}}, $data);
+
+        $this->assertTrue($updated);
+        ${{MODULE_LOWER}}->refresh();
+
+
+    }
+
+    public function test_service_can_delete_{{MODULE_LOWER}}(): void
+    {
+        ${{MODULE_LOWER}} = {{MODULE}}::factory()->create();
+
+        $deleted = $this->service->delete(${{MODULE_LOWER}});
+
+        $this->assertTrue($deleted);
+        $this->assertSoftDeleted('{{TABLE_NAME}}', [
+            'id' => ${{MODULE_LOWER}}->id,
+        ]);
+    }
+
+    public function test_service_can_restore_deleted_{{MODULE_LOWER}}(): void
+    {
+        ${{MODULE_LOWER}} = {{MODULE}}::factory()->create();
+        ${{MODULE_LOWER}}->delete();
+
+        $restored = $this->service->restore(${{MODULE_LOWER}});
+
+        $this->assertTrue($restored);
+        $this->assertDatabaseHas('{{TABLE_NAME}}', [
+            'id' => ${{MODULE_LOWER}}->id,
+            'deleted_at' => null,
+        ]);
+    }
+
+    public function test_service_returns_null_for_non_existent_{{MODULE_LOWER}}(): void
+    {
+        $found = $this->service->findById(999999);
+
+        $this->assertNull($found);
+    }
+}

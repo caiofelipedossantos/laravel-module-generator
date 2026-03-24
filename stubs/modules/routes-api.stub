@@ -1,0 +1,8 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Modules\{{MODULE}}\Http\Controllers\{{MODULE}}Controller;
+
+Route::apiResource('{{MODULE_KEBAB_PLURAL}}', {{MODULE}}Controller::class)->parameters([
+    '{{MODULE_KEBAB_PLURAL}}' => 'uuid',
+]);

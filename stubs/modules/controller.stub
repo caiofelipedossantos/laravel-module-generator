@@ -1,0 +1,99 @@
+<?php
+
+namespace App\Modules\{{MODULE}}\Http\Controllers;
+
+use App\Http\Controllers\Controller;
+use App\Core\Traits\ApiResponse;
+use App\Modules\{{MODULE}}\Services\{{MODULE}}Service;
+use App\Modules\{{MODULE}}\Http\Requests\Store{{MODULE}}Request;
+use App\Modules\{{MODULE}}\Http\Requests\Update{{MODULE}}Request;
+use App\Modules\{{MODULE}}\Http\Resources\{{MODULE}}Resource;
+use Illuminate\Http\JsonResponse;
+
+class {{MODULE}}Controller extends Controller
+{
+    use ApiResponse;
+
+    protected {{MODULE}}Service $service;
+
+    public function __construct({{MODULE}}Service $service)
+    {
+        $this->service = $service;
+    }
+
+    public function index(): JsonResponse
+    {
+        ${{MODULE_LOWER_PLURAL}} = $this->service->paginate(
+            perPage: request('per_page', 15)
+        );
+
+        return $this->paginatedResponse(
+            ${{MODULE_LOWER_PLURAL}},
+            '{{MODULE_PLURAL}} retrieved successfully'
+        );
+    }
+
+    public function store(Store{{MODULE}}Request $request): JsonResponse
+    {
+        ${{MODULE_LOWER}} = $this->service->create($request->validated());
+
+        return $this->createdResponse(
+            new {{MODULE}}Resource(${{MODULE_LOWER}}),
+            '{{MODULE}} created successfully'
+        );
+    }
+
+    public function show(string $uuid): JsonResponse
+    {
+        ${{MODULE_LOWER}} = $this->service->findByUuid($uuid);
+
+        if (!${{MODULE_LOWER}}) {
+            return $this->notFoundResponse('{{MODULE}} not found');
+        }
+
+        return $this->successResponse(
+            new {{MODULE}}Resource(${{MODULE_LOWER}}),
+            '{{MODULE}} retrieved successfully'
+        );
+    }
+
+    public function update(Update{{MODULE}}Request $request, string $uuid): JsonResponse
+    {
+        ${{MODULE_LOWER}} = $this->service->findByUuid($uuid);
+
+        if (!${{MODULE_LOWER}}) {
+            return $this->notFoundResponse('{{MODULE}} not found');
+        }
+
+        $updated = $this->service->update(${{MODULE_LOWER}}, $request->validated());
+
+        if (!$updated) {
+            return $this->serverErrorResponse('Failed to update {{MODULE_LOWER}}');
+        }
+
+        return $this->successResponse(
+            new {{MODULE}}Resource(${{MODULE_LOWER}}->fresh()),
+            '{{MODULE}} updated successfully'
+        );
+    }
+
+    public function destroy(string $uuid): JsonResponse
+    {
+        ${{MODULE_LOWER}} = $this->service->findByUuid($uuid);
+
+        if (!${{MODULE_LOWER}}) {
+            return $this->notFoundResponse('{{MODULE}} not found');
+        }
+
+        $deleted = $this->service->delete(${{MODULE_LOWER}});
+
+        if (!$deleted) {
+            return $this->serverErrorResponse('Failed to delete {{MODULE_LOWER}}');
+        }
+
+        return $this->successResponse(
+            null,
+            '{{MODULE}} deleted successfully'
+        );
+    }
+}
